@@ -1,0 +1,912 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>The Key Rack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<style>
+:root{
+  --ground:#F6F7F9;
+  --surface:#FFFFFF;
+  --surface-2:#EDF0F4;
+  --ink:#131A24;
+  --ink-2:#44505F;
+  --ink-3:#6E7B8C;
+  --rule:#D6DCE4;
+  --rule-soft:#E6EAF0;
+  --accent:#1F5C94;
+
+  --k-cek:#9E6206;
+  --k-dev:#0B6D76;
+  --k-lic:#5F3FA3;
+  --k-kek:#A82418;
+  --k-key:#465468;
+  --k-srv:#2A6349;
+
+  --ok:#2A6349;
+  --warn:#9E6206;
+  --bad:#A82418;
+
+  --f-display:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E131A;
+    --surface:#161D27;
+    --surface-2:#1E2733;
+    --ink:#E6EBF1;
+    --ink-2:#AEBAC8;
+    --ink-3:#7F8C9C;
+    --rule:#2C3743;
+    --rule-soft:#222C38;
+    --accent:#72AEE2;
+
+    --k-cek:#E3A93E;
+    --k-dev:#3FB9C2;
+    --k-lic:#A88DE8;
+    --k-kek:#F1796B;
+    --k-key:#9AA6B6;
+    --k-srv:#61B78C;
+
+    --ok:#61B78C;
+    --warn:#E3A93E;
+    --bad:#F1796B;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E131A;
+  --surface:#161D27;
+  --surface-2:#1E2733;
+  --ink:#E6EBF1;
+  --ink-2:#AEBAC8;
+  --ink-3:#7F8C9C;
+  --rule:#2C3743;
+  --rule-soft:#222C38;
+  --accent:#72AEE2;
+
+  --k-cek:#E3A93E;
+  --k-dev:#3FB9C2;
+  --k-lic:#A88DE8;
+  --k-kek:#F1796B;
+  --k-key:#9AA6B6;
+  --k-srv:#61B78C;
+
+  --ok:#61B78C;
+  --warn:#E3A93E;
+  --bad:#F1796B;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+
+/* ---------- masthead ---------- */
+header.mast{padding-block:44px 26px;border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);margin:0 0 14px
+}
+h1{
+  font-family:var(--f-display);font-weight:700;font-size:clamp(30px,5.4vw,50px);
+  line-height:1.04;letter-spacing:-.022em;margin:0 0 14px;text-wrap:balance
+}
+.standfirst{
+  font-size:clamp(16px,2.1vw,18.5px);color:var(--ink-2);max-width:62ch;margin:0;
+}
+.standfirst b{color:var(--ink);font-weight:600}
+
+/* ---------- key rack ---------- */
+.rack{
+  margin-block:26px 0;padding:18px 18px 16px;
+  background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+}
+.rack-head{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  flex-wrap:wrap;margin-bottom:14px
+}
+.rack-title{
+  font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3)
+}
+.rack-hint{font-size:13.5px;color:var(--ink-3);font-style:italic}
+.rack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;background:var(--rule-soft)}
+.chip{
+  background:var(--surface);border:0;text-align:left;cursor:pointer;
+  padding:11px 12px 12px;display:block;width:100%;font:inherit;color:inherit;
+  border-left:3px solid var(--bar,var(--ink-3));
+  transition:background .14s ease;
+}
+.chip:hover,.chip:focus-visible{background:var(--surface-2)}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.chip[aria-pressed="true"]{background:var(--surface-2)}
+.chip-name{
+  font-family:var(--f-mono);font-size:11.5px;font-weight:600;color:var(--bar);
+  letter-spacing:.01em;display:block;margin-bottom:5px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+.chip-state{
+  font-family:var(--f-display);font-size:12.5px;font-weight:500;color:var(--ink-2);
+  display:flex;align-items:center;gap:6px;line-height:1.3
+}
+.dot{width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:var(--ink-3)}
+.dot.s-live{background:var(--bar)}
+.dot.s-flight{background:var(--bar);box-shadow:0 0 0 3px color-mix(in srgb,var(--bar) 24%,transparent)}
+.dot.s-none{background:transparent;border:1.5px dashed var(--ink-3)}
+.dot.s-gone{background:transparent;border:1.5px solid var(--bad)}
+.chip[data-state="none"] .chip-name{opacity:.42}
+.chip[data-state="none"] .chip-state{opacity:.55}
+
+/* definition drawer */
+.defn{
+  margin-top:1px;background:var(--surface);border-left:3px solid var(--bar,var(--accent));
+  padding:15px 16px 16px;font-size:14.5px;color:var(--ink-2)
+}
+.defn[hidden]{display:none}
+.defn h3{
+  font-family:var(--f-mono);font-size:12px;font-weight:600;letter-spacing:.02em;
+  margin:0 0 4px;color:var(--bar)
+}
+.defn .sym{font-family:var(--f-mono);font-size:12px;color:var(--ink-3);margin:0 0 10px}
+.defn p{margin:0 0 8px}
+.defn p:last-child{margin-bottom:0}
+.defn .lives{
+  font-family:var(--f-display);font-size:12.5px;font-weight:500;color:var(--ink);
+  border-top:1px solid var(--rule-soft);padding-top:9px;margin-top:11px
+}
+
+/* ---------- stage nav ---------- */
+nav.stages{margin-block:34px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stage-track{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--rule-soft);
+  overflow-x:auto
+}
+.stage-btn{
+  background:var(--surface);border:0;border-top:3px solid transparent;
+  padding:13px 12px 14px;cursor:pointer;font:inherit;color:var(--ink-3);text-align:left;
+  min-width:126px;transition:background .14s ease,color .14s ease
+}
+.stage-btn:hover{background:var(--surface-2);color:var(--ink-2)}
+.stage-btn:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.stage-btn[aria-selected="true"]{border-top-color:var(--accent);color:var(--ink);background:var(--surface-2)}
+.stage-num{
+  font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;
+  display:block;margin-bottom:4px;opacity:.75
+}
+.stage-label{font-family:var(--f-display);font-size:14px;font-weight:600;letter-spacing:-.005em;display:block}
+.stage-when{font-family:var(--f-body);font-size:12px;color:var(--ink-3);display:block;margin-top:2px;font-style:italic}
+
+/* ---------- stage panel ---------- */
+.panel{padding-block:30px 0}
+.panel-head{margin-bottom:22px}
+.panel-head h2{
+  font-family:var(--f-display);font-weight:700;font-size:clamp(22px,3.4vw,31px);
+  letter-spacing:-.018em;margin:0 0 8px;text-wrap:balance
+}
+.panel-head p{margin:0;color:var(--ink-2);max-width:66ch;font-size:16.5px}
+
+figure.diagram{
+  margin:0 0 26px;background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+  padding:6px 6px 0
+}
+.svg-scroll{overflow-x:auto}
+figure.diagram svg{display:block;width:100%;min-width:660px;height:auto;color:var(--ink-3)}
+figcaption{
+  font-size:13.5px;color:var(--ink-3);padding:11px 14px 13px;border-top:1px solid var(--rule-soft);
+  margin-top:4px
+}
+
+.cols{display:grid;grid-template-columns:1.55fr 1fr;gap:34px;align-items:start}
+@media (max-width:820px){.cols{grid-template-columns:1fr;gap:26px}}
+
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{
+  counter-increment:s;position:relative;padding-left:38px;margin-bottom:17px;
+  font-size:15.5px;color:var(--ink-2)
+}
+.steps li::before{
+  content:counter(s,decimal-leading-zero);position:absolute;left:0;top:2px;
+  font-family:var(--f-mono);font-size:11px;font-weight:600;color:var(--ink-3);
+  letter-spacing:.04em
+}
+.steps li b{color:var(--ink);font-weight:600}
+.steps li .kref{
+  font-family:var(--f-mono);font-size:12.5px;font-weight:500;
+  padding:1px 4px;border-radius:2px;white-space:nowrap
+}
+.kref.cek{color:var(--k-cek);background:color-mix(in srgb,var(--k-cek) 12%,transparent)}
+.kref.dev{color:var(--k-dev);background:color-mix(in srgb,var(--k-dev) 12%,transparent)}
+.kref.lic{color:var(--k-lic);background:color-mix(in srgb,var(--k-lic) 12%,transparent)}
+.kref.kek{color:var(--k-kek);background:color-mix(in srgb,var(--k-kek) 12%,transparent)}
+.kref.key{color:var(--k-key);background:color-mix(in srgb,var(--k-key) 14%,transparent)}
+.kref.srv{color:var(--k-srv);background:color-mix(in srgb,var(--k-srv) 12%,transparent)}
+
+aside.notes{display:flex;flex-direction:column;gap:1px;background:var(--rule-soft);border:1px solid var(--rule);border-radius:4px}
+.note{background:var(--surface);padding:15px 16px 16px}
+.note h4{
+  font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;margin:0 0 8px
+}
+.note p{margin:0;font-size:14.5px;color:var(--ink-2)}
+.note p + p{margin-top:8px}
+.note.attacker h4{color:var(--bad)}
+.note.attacker{border-left:3px solid var(--bad)}
+.note.honest h4{color:var(--warn)}
+.note.honest{border-left:3px solid var(--warn)}
+.note.holds h4{color:var(--ok)}
+.note.holds{border-left:3px solid var(--ok)}
+code{font-family:var(--f-mono);font-size:.86em;background:var(--surface-2);padding:1px 4px;border-radius:2px}
+.note code{background:color-mix(in srgb,var(--ink-3) 14%,transparent)}
+
+/* ---------- worth ladder ---------- */
+.worth{margin-block:46px 0}
+.worth h3{
+  font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);margin:0 0 10px
+}
+.worth-lede{margin:0 0 18px;color:var(--ink-2);max-width:64ch;font-size:16px}
+.ladder{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px;
+  background:var(--rule-soft);border:1px solid var(--rule);border-radius:4px}
+.rung{
+  background:var(--surface);padding:15px 18px 16px;
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,1.5fr);
+  gap:8px 24px;align-items:baseline;border-left:3px solid var(--tone)
+}
+@media (max-width:760px){.rung{grid-template-columns:1fr;gap:5px}}
+.rung.r-none{--tone:var(--ok)}
+.rung.r-some{--tone:var(--warn)}
+.rung.r-total{--tone:var(--bad)}
+.rung-what{font-family:var(--f-display);font-size:15px;font-weight:500;color:var(--ink)}
+.rung-worth{font-family:var(--f-display);font-size:15px;font-weight:700;color:var(--tone);letter-spacing:-.005em}
+.rung-why{font-size:14px;color:var(--ink-2)}
+.r-total .rung-what,.r-total .rung-worth{font-weight:700}
+
+/* ---------- formula strip ---------- */
+.formula{
+  margin-block:44px 0;background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+  padding:22px 22px 20px
+}
+.formula h3{
+  font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);margin:0 0 16px
+}
+.fbox{overflow-x:auto;margin-bottom:14px}
+pre.hier{
+  font-family:var(--f-mono);font-size:12.5px;line-height:1.85;margin:0;
+  color:var(--ink-2);white-space:pre;min-width:520px
+}
+pre.hier b{font-weight:600}
+pre.hier .c-cek{color:var(--k-cek)}
+pre.hier .c-dev{color:var(--k-dev)}
+pre.hier .c-lic{color:var(--k-lic)}
+pre.hier .c-kek{color:var(--k-kek)}
+pre.hier .c-srv{color:var(--k-srv)}
+pre.hier .cmt{color:var(--ink-3);font-style:italic}
+.banned{
+  border-left:3px solid var(--bad);padding:13px 15px;background:color-mix(in srgb,var(--bad) 7%,transparent);
+  font-size:14.5px;color:var(--ink-2)
+}
+.banned b{color:var(--ink);font-weight:600}
+
+footer.colophon{
+  margin-top:46px;padding-top:20px;border-top:1px solid var(--rule);
+  font-size:13px;color:var(--ink-3);display:flex;gap:18px;flex-wrap:wrap;justify-content:space-between
+}
+footer.colophon p{margin:0;max-width:56ch}
+.srcs{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.01em}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">SafeIT · Team Guide ch. 3, drawn out</p>
+  <h1>The Key Rack</h1>
+  <p class="standfirst">Five distinct secrets, six stages, one file. This traces where each secret is
+  <b>born</b>, where it <b>travels</b>, where it <b>is never written down</b>, and what a recipient is
+  left holding after they are revoked.</p>
+</header>
+
+<section class="rack" aria-label="The five secrets and their state at this stage">
+  <div class="rack-head">
+    <span class="rack-title">The five secrets · state at stage <span id="rackStage">1</span></span>
+    <span class="rack-hint">Click any secret for its definition.</span>
+  </div>
+  <div class="rack-grid" id="rackGrid"></div>
+  <div class="defn" id="defn" hidden></div>
+</section>
+
+<nav class="stages" aria-label="Lifecycle stages">
+  <div class="stage-track" role="tablist" id="stageTrack"></div>
+</nav>
+
+<main class="panel">
+  <div class="panel-head">
+    <h2 id="stTitle"></h2>
+    <p id="stLede"></p>
+  </div>
+
+  <figure class="diagram">
+    <div class="svg-scroll" id="svgHost"></div>
+    <figcaption id="stCaption"></figcaption>
+  </figure>
+
+  <div class="cols">
+    <ol class="steps" id="stSteps"></ol>
+    <aside class="notes" id="stNotes"></aside>
+  </div>
+</main>
+
+<section class="worth">
+  <h3>What a capture is actually worth</h3>
+  <p class="worth-lede">The four rows below are the answer to nearly every question an examiner will ask,
+  and the last one is the row to volunteer rather than wait for.</p>
+  <ol class="ladder">
+    <li class="rung r-none"><span class="rung-what">The <code>.sfit</code> file alone</span>
+      <span class="rung-worth">Nothing, ever</span>
+      <span class="rung-why">Every slot needs a KEK; every KEK needs two halves; you have neither.</span></li>
+    <li class="rung r-none"><span class="rung-what">A <b>device share</b>, unsealed</span>
+      <span class="rung-worth">Nothing on its own</span>
+      <span class="rung-why">Half a key, with no way to obtain the other half. It decrypts nothing.</span></li>
+    <li class="rung r-some"><span class="rung-what">An <b>epoch licence share</b></span>
+      <span class="rung-worth">One epoch, one recipient, one device</span>
+      <span class="rung-why">Bounded on three axes at once. Worthless in any other slice.</span></li>
+    <li class="rung r-total"><span class="rung-what">The <b>CEK</b>, dumped from memory</span>
+      <span class="rung-worth">That container — forever</span>
+      <span class="rung-why">Not other containers: each has its own random CEK. Not anyone else's future
+      access: revocation still governs that. But this one document, permanently.</span></li>
+  </ol>
+</section>
+
+<section class="formula">
+  <h3>The hierarchy, as the code writes it</h3>
+  <div class="fbox">
+<pre class="hier"><b class="c-cek">CEK</b>               = OsRng(32)                       <span class="cmt">one RANDOM key per container</span>
+<b class="c-dev">share_device_r</b>    = OsRng(32), HPKE-sealed to r's device key, lives in the .sfit
+<b class="c-lic">share_licence_r_e</b> = HKDF(<span class="c-srv">server_root_cid</span>, "safeit/v1/epoch" ‖ cid ‖ device_id_r ‖ LE64(e))
+                    <span class="cmt">server-side only; server_root_cid NEVER leaves the server</span>
+<b class="c-kek">KEK_{r,e}</b>         = HKDF(kdf_salt, <span class="c-dev">share_device_r</span> ‖ <span class="c-lic">share_licence_r_e</span>,
+                         "safeit/v1/kek" ‖ cid ‖ recipient_r ‖ LE64(e))
+slot_{r,e}        = AEAD(<b class="c-kek">KEK_{r,e}</b>, nonce, aad = cid‖recipient_r‖slot_type‖LE64(e), <b class="c-cek">CEK</b>)</pre>
+  </div>
+  <div class="banned">
+    <b>Never write <code>CEK = HKDF(shares)</code>.</b> It reads more elegantly and it silently kills
+    per-recipient revocation: if the CEK were derived from the shares, every recipient would need
+    byte-identical shares to land on the same CEK — so a revoked recipient could be re-admitted by a
+    colleague pasting 32 bytes into a chat window. ADR 0010 was written to retract exactly that.
+  </div>
+</section>
+
+<footer class="colophon">
+  <p>Every value here is taken from <code>CLAUDE.md</code>, <code>docs/SPEC.md</code> and
+  <code>docs/GLOSSARY.md</code>. Nothing on this page is the source of a number — if it disagrees with
+  the spec, the spec wins.</p>
+  <p class="srcs">SafeIT v0.2 · EPOCH_COUNT = 32 · drawn 18 Sep 2026</p>
+</footer>
+
+</div>
+
+<script>
+/* ============================ the five secrets ============================ */
+const KEYS = [
+  { id:'cek', cls:'cek', name:'CEK', full:'Content Encryption Key', sym:'32 bytes · one per container',
+    body:`<p>The only key that ever touches the document itself. Thirty-two bytes straight out of the
+    operating system's random source — <b>it is not calculated from anything</b>, and that single word
+    is what makes per-recipient revocation possible at all.</p>
+    <p>It is wrapped separately into every key slot in the file, once per recipient per epoch.</p>`,
+    lives:'Lives: nowhere at rest. In memory only while a document is open.' },
+
+  { id:'dev', cls:'dev', name:'share_device_r', full:'Device share', sym:'32 bytes · per container, per recipient',
+    body:`<p>Half of the pair that builds a KEK. Random, one per recipient, and it <b>does</b> travel
+    inside the <code>.sfit</code> — but HPKE-sealed to that recipient's device public key, so only the
+    enrolled machine can retrieve it.</p>
+    <p>Copy the file to another laptop and this half is unreachable. That is what "inert off an enrolled
+    device" means concretely.</p>`,
+    lives:'Lives: in the file, sealed. Unsealed only inside the enrolled device.' },
+
+  { id:'lic', cls:'lic', name:'share_licence_{r,e}', full:'Epoch licence share', sym:'32 bytes · per container, per recipient, per epoch',
+    body:`<p>The other half. <b>It is not a key</b> — on its own it decrypts nothing. It is an
+    ingredient, and calling it a "licence key" is a retired term.</p>
+    <p>It is never in the file. The server derives it on demand from the container root secret and seals
+    it to one device, for one time slice, when it decides to.</p>`,
+    lives:'Lives: never in the file. Derived server-side, sealed in flight, held briefly on the device.' },
+
+  { id:'kek', cls:'kek', name:'KEK_{r,e}', full:'Key Encryption Key', sym:'32 bytes · one per recipient, per epoch',
+    body:`<p>Wraps the CEK so the CEK can sit safely inside the file. This is the one people find
+    strange: <b>it is never stored anywhere at all.</b></p>
+    <p>It is computed fresh, in memory, from the two halves at the moment it is needed, used once, and
+    discarded. Its whole life is perhaps a millisecond.</p>`,
+    lives:'Lives: nowhere. Derived on demand, zeroized immediately.' },
+
+  { id:'key', cls:'key', name:'device key', full:'Device key pair', sym:'X25519 pair · per device',
+    body:`<p>Generated inside the operating system's own keystore at enrolment — DPAPI on Windows,
+    Secret Service on Linux. Where the platform allows it, the private half cannot be exported at all.</p>
+    <p>This is the anchor. It is what makes "this laptop and no other" mean something rather than being
+    a setting somebody can edit.</p>`,
+    lives:'Lives: in the OS keystore, ideally non-exportable, until re-enrolment.' },
+
+  { id:'srv', cls:'srv', name:'server_root_cid', full:'Container root secret', sym:'server only · one per container',
+    body:`<p>Not a container key and never confused with one. It is the seed every epoch licence share
+    for one container is derived from, and it <b>never leaves the server</b> — one column, one machine.</p>
+    <p>The issuer signing key <code>issuer_sk</code> lives here too, and no client ever holds it. That is
+    why a compromised viewer cannot mint a container: not because a feature was removed from its build,
+    but because it has never held the key that makes a container genuine.</p>`,
+    lives:'Lives: one database row on the policy server. Never transmitted.' },
+];
+
+/* ================================ drawing ================================ */
+const W = 820, H = 384;
+const LANE = {
+  dev:  { x: 18,  w: 244, label: 'RECIPIENT / SENDER MACHINE' },
+  file: { x: 296, w: 228, label: 'THE .sfit FILE' },
+  srv:  { x: 558, w: 244, label: 'POLICY SERVER' },
+};
+
+function lanes(a, b, c){
+  const L = [['dev', a], ['file', b], ['srv', c]];
+  return L.map(([k, title]) => {
+    const l = LANE[k];
+    const dim = title === null;
+    return `<rect x="${l.x}" y="34" width="${l.w}" height="${H-56}" rx="3" fill="none"
+        stroke="currentColor" stroke-width="1" stroke-dasharray="3 4" opacity="${dim?0.22:0.45}"/>
+      <text x="${l.x + l.w/2}" y="24" text-anchor="middle" font-family="IBM Plex Mono, monospace"
+        font-size="10" letter-spacing="1.4" fill="currentColor" opacity="${dim?0.4:0.8}">${title ?? l.label}</text>`;
+  }).join('');
+}
+
+/* a labelled block */
+function box(x, y, w, h, title, sub, opt = {}){
+  const c = opt.color ? `var(--k-${opt.color})` : 'currentColor';
+  const fill = opt.color ? `color-mix(in srgb, var(--k-${opt.color}) 11%, transparent)` : 'var(--surface-2)';
+  const dash = opt.sealed ? ' stroke-dasharray="4 3"' : '';
+  const sw = opt.strong ? 2 : 1.2;
+  const ty = sub ? y + h/2 - 4 : y + h/2 + 4;
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${fill}"
+      stroke="${c}" stroke-width="${sw}"${dash} opacity="${opt.faded ? .38 : 1}"/>
+    <text x="${x + w/2}" y="${ty}" text-anchor="middle" font-family="IBM Plex Mono, monospace"
+      font-size="11.5" font-weight="600" fill="${c}" opacity="${opt.faded ? .5 : 1}">${title}</text>
+    ${sub ? `<text x="${x + w/2}" y="${y + h/2 + 12}" text-anchor="middle"
+      font-family="Archivo, sans-serif" font-size="10.5" fill="currentColor"
+      opacity="${opt.faded ? .38 : .72}">${sub}</text>` : ''}`;
+}
+
+/* a plain descriptive node (no key colour) */
+function node(x, y, w, h, title, sub){
+  return box(x, y, w, h, title, sub, {});
+}
+
+function arrow(x1, y1, x2, y2, label, opt = {}){
+  const c = opt.color ? `var(--k-${opt.color})` : 'currentColor';
+  const dash = opt.dashed ? ' stroke-dasharray="5 4"' : '';
+  const mid = opt.labelAt ?? 0.5;
+  const lx = x1 + (x2 - x1) * mid, ly = y1 + (y2 - y1) * mid;
+  const dy = opt.below ? 15 : -8;
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="1.6"${dash}
+      marker-end="url(#ah)" opacity="${opt.faded ? .35 : .9}"/>
+    ${label ? `<text x="${lx}" y="${ly + dy}" text-anchor="middle" font-family="Archivo, sans-serif"
+      font-size="10.5" font-weight="500" fill="${c}" opacity="${opt.faded ? .4 : .95}">${label}</text>` : ''}`;
+}
+
+/* a crossed-out / dead marker */
+function strike(x, y, w, h){
+  return `<line x1="${x+6}" y1="${y+6}" x2="${x+w-6}" y2="${y+h-6}" stroke="var(--bad)" stroke-width="1.6"/>
+    <line x1="${x+w-6}" y1="${y+6}" x2="${x+6}" y2="${y+h-6}" stroke="var(--bad)" stroke-width="1.6"/>`;
+}
+
+function caption(t){ return t; }
+
+function svg(inner, aria){
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${aria}">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6"
+      orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="context-stroke"/></marker></defs>
+    ${inner}</svg>`;
+}
+
+/* ================================ stages ================================= */
+const STAGES = [
+{
+  n:'01', label:'Enrol', when:'once per device',
+  title:'Enrolment — the anchor is planted',
+  lede:'Before any file exists, a machine proves it is a machine. This is the only stage that creates something the operating system, not SafeIT, is responsible for keeping.',
+  cap:'The private half never leaves the keystore — not at enrolment, and not at any later stage on this page.',
+  aria:'The device generates an X25519 key pair inside the OS keystore; only the public half travels to the policy server, which stores it against a device id.',
+  art: () => svg(
+    lanes(null, 'NOTHING YET', null) +
+    box(40, 72, 200, 48, 'OS keystore', 'DPAPI · Secret Service', {color:'key', strong:true}) +
+    box(40, 150, 200, 40, 'private half', 'never exported', {color:'key'}) +
+    box(40, 206, 200, 40, 'public half', 'safe to publish', {color:'key'}) +
+    `<text x="140" y="292" text-anchor="middle" font-family="Archivo, sans-serif" font-size="11"
+       fill="currentColor" opacity=".7">generated inside the keystore,</text>
+     <text x="140" y="307" text-anchor="middle" font-family="Archivo, sans-serif" font-size="11"
+       fill="currentColor" opacity=".7">not by our code</text>` +
+    `<text x="410" y="258" text-anchor="middle" font-family="Archivo, sans-serif" font-size="12"
+       fill="currentColor" opacity=".45">no container exists</text>
+     <text x="410" y="276" text-anchor="middle" font-family="Archivo, sans-serif" font-size="12"
+       fill="currentColor" opacity=".45">at this stage</text>` +
+    arrow(244, 222, 578, 152, 'public half + fingerprint', {color:'key', labelAt:.42}) +
+    box(580, 128, 200, 44, 'device table', 'device_id → device_pk', {}) +
+    box(580, 196, 200, 40, 'issuer_sk', 'server only, always', {color:'srv', strong:true}),
+    'Enrolment: the device generates a key pair inside the OS keystore and sends only the public half to the server.'),
+  steps:[
+    `The machine asks its own operating system for an <span class="kref key">X25519 key pair</span>. Our code does not generate it and, where the platform allows, <b>cannot read the private half back</b>.`,
+    `The public half plus a fuzzy hardware fingerprint go to the server, signed over a server-issued nonce so the request cannot be replayed.`,
+    `The server stores <code>device_id → device_pk</code> and the attributes as they were at enrolment — the "as it was then" snapshot is what later lets a missing attribute score as drift rather than a mismatch.`,
+    `<b>Nothing container-related exists yet.</b> No CEK, no shares, no file. Enrolment is a prerequisite, not part of any document's life.`,
+  ],
+  notes:[
+    {k:'holds', h:'Why this is the anchor', p:`Everything downstream reduces to "can this machine unseal something addressed to that public key". If the private half is non-exportable, "this laptop and no other" stops being a setting somebody can edit and becomes a property of the hardware.`},
+    {k:'honest', h:'Where the platform will not co-operate', p:`Not every OS keystore guarantees non-exportability, and we cannot verify the guarantee remotely. Say "ideally non-exportable" and mean it — this is a bounded claim, not an absolute one.`},
+  ],
+  state:{ cek:'none', dev:'none', lic:'none', kek:'none', key:'live', srv:'live' },
+  labels:{ key:'Born · in the keystore', srv:'issuer_sk resident' },
+},
+
+{
+  n:'02', label:'Pack', when:'once per container',
+  title:'Packing — one house key, a different lock on every box',
+  lede:'The document is encrypted exactly once. Then the same content key is wrapped separately for every recipient, for every one of the 32 epochs, by a KEK that is discarded the instant it has been used.',
+  cap:'The container ends up holding the CEK 32 times per recipient — each time under a different, unstored KEK. The epoch licence shares are in none of them.',
+  aria:'The sender generates a random CEK and a device share per recipient; the server derives the epoch shares and KEKs and returns them sealed; the sender wraps the CEK into a slot per recipient per epoch.',
+  art: () => svg(
+    lanes('SENDER · ENCRYPTER', null, null) +
+    box(34, 54, 212, 40, 'CEK', 'OsRng(32) — random', {color:'cek', strong:true}) +
+    box(34, 106, 212, 36, 'share_device_r', 'OsRng(32), per recipient', {color:'dev'}) +
+    arrow(140, 146, 140, 176, '', {color:'dev'}) +
+    box(34, 178, 212, 34, 'sealed to server', 'HPKE', {color:'dev', sealed:true}) +
+    arrow(250, 195, 574, 120, 'POST /v1/containers', {color:'dev', labelAt:.52}) +
+
+    box(576, 54, 208, 34, 'server_root_cid', 'never leaves this row', {color:'srv', strong:true}) +
+    arrow(680, 90, 680, 112, '', {color:'lic'}) +
+    box(576, 114, 208, 38, 'share_licence_{r,e}', 'HKDF · all 32 epochs', {color:'lic'}) +
+    arrow(680, 154, 680, 178, 'joined with the device share', {color:'kek', labelAt:1.05}) +
+    box(576, 200, 208, 36, 'KEK_{r,e}', 'HKDF — 32 per recipient', {color:'kek'}) +
+    arrow(574, 254, 250, 254, 'Sealed Recipe → sender\'s device key', {color:'kek', below:true, labelAt:.5}) +
+
+    box(34, 236, 212, 36, 'unseal, wrap, zeroize', 'KEKs die here', {color:'kek', sealed:true}) +
+    arrow(252, 300, 296, 300, '', {}) +
+    box(300, 282, 220, 36, 'slot_{r,e} × 32', 'AEAD(KEK, …, CEK)', {color:'cek'}) +
+    box(300, 226, 220, 36, 'share_device_r', 'sealed to r\'s device', {color:'dev', sealed:true}) +
+    box(300, 170, 220, 36, 'encrypted payload', 'chunked, rasterised', {}) +
+    box(300, 114, 220, 36, 'signature', 'issuer_sk, server-made', {color:'srv'}) +
+    arrow(574, 132, 524, 132, '', {color:'srv', dashed:true}),
+    'Packing: a random CEK, a device share per recipient, server-derived epoch shares and KEKs, and one wrapped slot per recipient per epoch.'),
+  steps:[
+    `The Encrypter generates the <span class="kref cek">CEK</span> at random and one <span class="kref dev">share_device_r</span> per recipient, also at random.`,
+    `Each device share is HPKE-sealed <b>to the server</b> and posted with the recipient list and policy. The server holds it in memory for one step and zeroizes it.`,
+    `The server derives every <span class="kref lic">share_licence_{r,e}</span> for all 32 epochs from <span class="kref srv">server_root_cid</span>, joins each with the matching device share, and produces <span class="kref kek">KEK_{r,e}</span>.`,
+    `Those KEKs come back as the <b>Sealed Recipe</b> — sealed to the <i>sender's</i> device key, carrying no cleartext key material.`,
+    `The sender unseals them and wraps the CEK once per <code>(recipient, epoch)</code> pair: 32 slots each, about 3.6 kB per recipient. <b>Then every KEK is zeroized.</b>`,
+    `The device share is re-sealed, this time to the <i>recipient's</i> device key, and written into the file. The server signs the container; no client can.`,
+  ],
+  notes:[
+    {k:'holds', h:'What is in the file', p:`Encrypted payload, one sealed device share per recipient, 32 wrapped slots per recipient, and a signature. <b>No epoch licence share is in the file.</b> That absence is the whole design.`},
+    {k:'attacker', h:'What copying the file gets you', p:`Everything above, and nothing usable. Each slot needs a KEK; each KEK needs two halves; one half is sealed to a keystore you do not have and the other has not been issued to you at all.`},
+  ],
+  state:{ cek:'live', dev:'live', lic:'flight', kek:'gone', key:'live', srv:'live' },
+  labels:{ cek:'Born · wrapped 32× per recipient', dev:'Born · sealed into the file', lic:'Derived, sent inside the recipe', kek:'Used once, then zeroized', key:'Seals and unseals', srv:'Derives everything' },
+},
+
+{
+  n:'03', label:'Licence', when:'per epoch, per device',
+  title:'The licence request — half a key, on a timer',
+  lede:'A recipient asks for the missing half. The server decides, and what comes back is key material, not a verdict — there is no boolean anywhere on this path for an attacker to flip.',
+  cap:'Every refusal — unknown container, revoked recipient, epoch outside the window, unenrolled device — is the same 403 with the same body shape and a random reference code.',
+  aria:'The recipient signs a challenge with its device key; the server verifies, checks revocation and the epoch window, then derives and seals the epoch licence share to the device, or refuses identically.',
+  art: () => svg(
+    lanes('RECIPIENT · DECIPHER', null, null) +
+    box(34, 62, 212, 38, 'device key', 'signs the challenge', {color:'key'}) +
+    arrow(250, 92, 574, 80, 'signed challenge + cid + epoch range', {color:'key', labelAt:.5}) +
+
+    box(576, 62, 208, 34, 'verify signature', 'against stored device_pk', {}) +
+    arrow(680, 98, 680, 118, '', {}) +
+    box(576, 120, 208, 34, 'revoked? in window?', 'three lookups', {}) +
+    arrow(680, 156, 680, 176, 'yes', {color:'lic'}) +
+    box(576, 178, 208, 36, 'share_licence_{r,e}', 'HKDF(server_root_cid, …)', {color:'lic'}) +
+    arrow(574, 236, 250, 236, 'sealed to the device public key', {color:'lic', below:true}) +
+
+    `<line x1="680" y1="156" x2="760" y2="156" stroke="var(--bad)" stroke-width="1.4"/>
+     <line x1="760" y1="156" x2="760" y2="300" stroke="var(--bad)" stroke-width="1.4"/>
+     <line x1="760" y1="300" x2="704" y2="300" stroke="var(--bad)" stroke-width="1.4" marker-end="url(#ah)"/>
+     <text x="766" y="228" font-family="Archivo, sans-serif" font-size="10.5" fill="var(--bad)"
+       transform="rotate(-90 766 228)" text-anchor="middle">no, in any of five ways</text>` +
+    `<rect x="576" y="282" width="124" height="36" rx="3" fill="color-mix(in srgb, var(--bad) 10%, transparent)"
+       stroke="var(--bad)" stroke-width="1.4"/>
+     <text x="638" y="299" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11.5"
+       font-weight="600" fill="var(--bad)">403 denied</text>
+     <text x="638" y="312" text-anchor="middle" font-family="Archivo, sans-serif" font-size="10"
+       fill="var(--bad)" opacity=".85">+ random ref code</text>` +
+
+    box(34, 218, 212, 36, 'opaque sealed blob', 'relays cannot open it', {color:'lic', sealed:true}) +
+    box(34, 272, 212, 36, 'share_licence_{r,e}', 'unsealed in the keystore', {color:'lic'}) +
+    arrow(140, 258, 140, 268, '', {color:'lic'}) +
+
+    `<text x="410" y="166" text-anchor="middle" font-family="Archivo, sans-serif" font-size="12"
+       fill="currentColor" opacity=".45">the file is not</text>
+     <text x="410" y="184" text-anchor="middle" font-family="Archivo, sans-serif" font-size="12"
+       fill="currentColor" opacity=".45">involved in this hop</text>`,
+    'The licence request: a signed challenge goes up, and either a sealed epoch share or an identical refusal comes back.'),
+  steps:[
+    `The Decipher signs a server-issued challenge with the <span class="kref key">device key</span> and asks for a range of epochs.`,
+    `The server verifies the signature against the public half it stored at enrolment, then makes three checks: is the container known, is this recipient revoked, does the range fall inside the window.`,
+    `If all three hold, it derives <span class="kref lic">share_licence_{r,e}</span> and <b>HPKE-seals it to the device public key</b>. Any relaying layer — UI, cache, shell — carries a blob it cannot open.`,
+    `If any fails, the response is byte-identical apart from a random reference code. <b>The reason lives only in the server log.</b>`,
+    `The device unseals inside the keystore. It now holds one half, valid for the requested slices and useless outside them.`,
+  ],
+  notes:[
+    {k:'holds', h:'No verdict crosses the wire', p:`The server never answers "you may open this". It hands over an ingredient or it refuses. Patch the client all you like — there is no <code>if</code> to remove, because skipping this call means skipping the acquisition of half a key.`},
+    {k:'attacker', h:'A stolen licence response', p:`Worth one recipient, for the epochs it covers, on the one device it was sealed to. It buys nothing in any other slice and nothing on any other machine.`},
+  ],
+  state:{ cek:'none', dev:'live', lic:'flight', kek:'none', key:'live', srv:'live' },
+  labels:{ cek:'Still wrapped, untouched', dev:'Waiting in the file', lic:'In flight — sealed to one device', kek:'Not yet derivable', key:'Signs, then unseals', srv:'Decides and derives' },
+},
+
+{
+  n:'04', label:'Open', when:'every time the file is opened',
+  title:'Opening — the two halves meet for about a millisecond',
+  lede:'Verify, then unseal, then derive, then unwrap. The order is enforced by the type system, not by discipline: an unverified container has no method that can decrypt.',
+  cap:'KEK_{r,e} exists only between the two arrows in the middle of this picture. It is never written anywhere, in any build.',
+  aria:'The viewer verifies the signature, unseals the device share from the file and the epoch share from the licence, derives the KEK, unwraps the CEK from the matching slot, and decrypts the payload.',
+  art: () => svg(
+    lanes('RECIPIENT · DECIPHER', null, null) +
+    box(300, 52, 220, 34, 'signature', 'checked FIRST', {color:'srv'}) +
+    arrow(298, 69, 252, 69, 'verify before parsing', {color:'srv', labelAt:.5}) +
+    box(34, 50, 212, 38, 'Unverified → Verified', 'the typestate guard', {color:'srv'}) +
+
+    box(300, 112, 220, 36, 'share_device_r', 'sealed, from the file', {color:'dev', sealed:true}) +
+    arrow(298, 130, 252, 130, '', {color:'dev'}) +
+    box(34, 112, 212, 36, 'unsealed in keystore', 'device private half', {color:'dev'}) +
+    arrow(140, 152, 140, 202, '', {color:'dev'}) +
+
+    box(576, 112, 208, 36, 'share_licence_{r,e}', 'from stage 3', {color:'lic'}) +
+    `<path d="M576 178 L300 178 L300 222 L250 222" fill="none" stroke="var(--k-lic)"
+       stroke-width="1.6" marker-end="url(#ah)"/>
+     <text x="438" y="171" text-anchor="middle" font-family="Archivo, sans-serif" font-size="10.5"
+       font-weight="500" fill="var(--k-lic)">held on the device for this epoch</text>` +
+    arrow(680, 150, 680, 174, '', {color:'lic'}) +
+
+    box(34, 204, 212, 40, 'KEK_{r,e}', 'HKDF — in memory only', {color:'kek', strong:true}) +
+    `<text x="258" y="250" font-family="Archivo, sans-serif" font-size="10.5" fill="var(--k-kek)">≈ 1 ms</text>` +
+
+    arrow(140, 248, 140, 274, '', {color:'cek'}) +
+    box(300, 258, 220, 36, 'slot_{r,e}', 'the matching epoch only', {color:'cek'}) +
+    arrow(298, 276, 252, 276, 'unwrap', {color:'cek'}) +
+    box(34, 276, 212, 36, 'CEK', 'decrypts the payload', {color:'cek', strong:true}) +
+    box(300, 318, 220, 34, 'encrypted payload', 'chunk by chunk', {}) +
+    arrow(252, 333, 298, 333, '', {color:'cek'}),
+    'Opening: signature first, then both halves unseal, the KEK forms for a millisecond, the CEK comes out of the one matching slot.'),
+  steps:[
+    `<b>The signature is checked before a single field is interpreted.</b> The type system makes this structural — <code>UnverifiedContainer</code> has no decrypt method, and only <code>verify_signature()</code> produces something that does.`,
+    `The <span class="kref dev">device share</span> is unsealed from the file using the private half in the keystore.`,
+    `The <span class="kref lic">epoch licence share</span> for the current slice <code>e(t)</code> is taken from what stage 3 delivered.`,
+    `The two are joined and run through HKDF with a domain-separating label to give <span class="kref kek">KEK_{r,e}</span>. It exists in memory and nowhere else.`,
+    `That KEK unwraps <b>one</b> slot — the one for this recipient and this epoch — yielding the <span class="kref cek">CEK</span>. The KEK is zeroized immediately.`,
+    `The CEK decrypts the payload chunks. Pages were rasterised at pack time, so the viewer's input surface is the container format and PNG, never a document parser.`,
+  ],
+  notes:[
+    {k:'holds', h:'The split-key property, stated precisely', p:`The two shares gate <b>whether you get a key at all</b>. They do not gate individual rights — once the CEK exists, <code>max_opens</code> and <code>device_limit</code> are ordinary comparisons on the attacker's own machine.`},
+    {k:'honest', h:'Only one of these lingers in memory', p:`The device share and the KEK are unsealed, used and zeroized in microseconds — the viewer does not need them again once the CEK is out. <b>The CEK alone persists for the session</b>, because every payload chunk has to be decrypted as pages render.`,
+      p2:`It has to. To show someone a page you must decrypt that page, and the key must exist somewhere the CPU can reach. No system running on hardware the user controls has solved this without a secure enclave.`},
+    {k:'attacker', h:'The largest exposure on the page', p:`A CEK dumped out of memory during a legitimate open is worth <b>that container, forever</b> — not other containers, which have their own random CEKs, and not anyone else's future access, which revocation still governs.`,
+      p2:`We state that plainly rather than hiding it. Volunteering it before an examiner asks reads as understanding the threat model; being caught on it reads as not having noticed.`},
+  ],
+  state:{ cek:'live', dev:'live', lic:'live', kek:'flight', key:'live', srv:'none' },
+  labels:{ cek:'Unwrapped · in memory while open', dev:'Unsealed', lic:'Unsealed, this slice only', kek:'Alive for ≈ 1 ms', key:'Unseals both halves', srv:'Not consulted at open time' },
+},
+
+{
+  n:'05', label:'Revoke', when:'when an operator decides',
+  title:'Revocation — one combination changes, nobody else notices',
+  lede:'This is the property the first version of the design accidentally destroyed. It works now for one reason only: every recipient holds different bytes, so nothing one of them has can help another.',
+  cap:'Bob keeps the file, his device key and his device share. What stops is the supply of the other half — and Alice has no copy of Bob\'s half to lend him.',
+  aria:'An operator revokes one recipient; from the effective epoch forward the server issues that recipient no further shares, while other recipients are entirely unaffected.',
+  art: () => svg(
+    lanes('TWO RECIPIENTS', null, null) +
+    `<text x="140" y="56" text-anchor="middle" font-family="Archivo, sans-serif" font-size="11.5"
+       font-weight="600" fill="currentColor">ALICE</text>` +
+    box(34, 66, 212, 34, 'share_device_A', 'her own 32 bytes', {color:'dev'}) +
+    box(34, 106, 212, 34, 'share_licence_{A,e}', 'still issued', {color:'lic'}) +
+    box(34, 146, 212, 32, 'opens normally', '', {color:'cek'}) +
+
+    `<text x="140" y="212" text-anchor="middle" font-family="Archivo, sans-serif" font-size="11.5"
+       font-weight="600" fill="currentColor">BOB · revoked</text>` +
+    box(34, 222, 212, 34, 'share_device_B', 'different 32 bytes', {color:'dev'}) +
+    box(34, 262, 212, 34, 'share_licence_{B,e}', 'no longer issued', {color:'lic', faded:true}) +
+    strike(34, 262, 212, 34) +
+    box(34, 302, 212, 32, 'KEK never forms', '', {color:'kek', faded:true}) +
+
+    `<path d="M252 124 L280 124 L280 279 L252 279" fill="none" stroke="var(--bad)"
+       stroke-width="1.4" stroke-dasharray="4 3"/>
+     <text x="410" y="196" text-anchor="middle" font-family="Archivo, sans-serif" font-size="11.5"
+       fill="var(--bad)" font-weight="600">Alice cannot lend Bob her share</text>
+     <text x="410" y="213" text-anchor="middle" font-family="Archivo, sans-serif" font-size="11"
+       fill="currentColor" opacity=".7">hers are different bytes — they do not fit his slots</text>` +
+
+    box(300, 66, 220, 36, 'one .sfit', 'both still hold a copy', {}) +
+    box(300, 282, 220, 36, 'Bob\'s slots', 'intact, and unopenable', {color:'cek', faded:true}) +
+
+    arrow(574, 128, 252, 128, 'share for epoch e', {color:'lic', labelAt:.42}) +
+    box(576, 110, 208, 36, 'issues to Alice', 'every epoch', {color:'lic'}) +
+    box(576, 232, 208, 36, 'revocation row', 'effective_from_epoch', {color:'srv', strong:true}) +
+    `<line x1="574" y1="250" x2="300" y2="250" stroke="var(--bad)" stroke-width="1.5" stroke-dasharray="5 4"/>
+     <line x1="300" y1="250" x2="252" y2="272" stroke="var(--bad)" stroke-width="1.5" stroke-dasharray="5 4"/>
+     <text x="430" y="243" text-anchor="middle" font-family="Archivo, sans-serif" font-size="10.5"
+       fill="var(--bad)">nothing further issued to Bob</text>`,
+    'Revocation: Alice keeps receiving shares, Bob stops, and because their shares are different bytes Alice cannot re-admit him.'),
+  steps:[
+    `An operator — not a device — calls revoke with the container id and the recipient, and the server writes a row recording <code>revoked_at</code> and <code>effective_from_epoch</code>.`,
+    `From that epoch forward, the licence handler issues Bob no further <span class="kref lic">epoch licence shares</span>.`,
+    `Bob still holds the file, his <span class="kref key">device key</span> and his <span class="kref dev">device share</span>. All of it is intact and none of it is sufficient.`,
+    `Alice is untouched. Her shares are <b>different bytes</b>, derived with her own device id in the label, and they do not fit Bob's slots.`,
+    `That last point is the entire argument. Under the retracted <code>CEK = HKDF(shares)</code> design, every recipient needed identical shares — so Alice could re-admit Bob by pasting 32 bytes into a chat window, with nothing broken and nothing patched.`,
+  ],
+  notes:[
+    {k:'honest', h:'Revocation is forward-acting', p:`A file already open is not killed mid-session. Doing that would need a client-side boolean poll, which invariant 2 forbids outright. The correct sentence is "the <b>next</b> open fails", never "the open file dies".`},
+    {k:'honest', h:'And the latency is a number, not a guess', p:`Bob keeps whatever was already issued to him until those slices elapse. The <code>issued_share</code> table records exactly what was pre-issued, which is what turns revocation latency into something computable rather than hand-waved.`},
+  ],
+  state:{ cek:'live', dev:'live', lic:'gone', kek:'gone', key:'live', srv:'live' },
+  labels:{ cek:'Still reachable — by Alice', dev:'Both still hold theirs', lic:'Supply cut, from epoch e', kek:'Cannot form for Bob', key:'Unaffected', srv:'Holds the revocation row' },
+},
+
+{
+  n:'06', label:'Expire', when:'at not_after',
+  title:'Expiry — the check that moved off the attacker\'s machine',
+  lede:'The honest version of this claim is narrower than the one we first wrote, and it is still the interesting one: the branch that enforces the deadline runs on our server, not on hardware the attacker controls.',
+  cap:'Granularity is one epoch: max(1 hour, window ÷ 32). A seven-day licence therefore dies within about five and a quarter hours of its deadline, not on the second.',
+  aria:'Past not_after the epoch index runs past 31 and the licence handler refuses to derive a share, so no KEK can form on the client; the root secret still exists on the server.',
+  art: () => svg(
+    `<text x="24" y="24" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.4"
+       fill="currentColor" opacity=".8">THE 32 EPOCHS</text>` +
+    Array.from({length:12}, (_,i) => {
+      const x = 24 + i*44;
+      return `<rect x="${x}" y="40" width="40" height="34" rx="2"
+        fill="color-mix(in srgb, var(--k-lic) 12%, transparent)" stroke="var(--k-lic)" stroke-width="1.1"/>
+        <text x="${x+20}" y="61" text-anchor="middle" font-family="IBM Plex Mono, monospace"
+          font-size="10.5" fill="var(--k-lic)">${i}</text>`;
+    }).join('') +
+    `<text x="570" y="62" font-family="IBM Plex Mono, monospace" font-size="13" fill="currentColor" opacity=".5">· · ·</text>
+     <rect x="614" y="40" width="40" height="34" rx="2" fill="color-mix(in srgb, var(--k-lic) 12%, transparent)"
+       stroke="var(--k-lic)" stroke-width="1.1"/>
+     <text x="634" y="61" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5"
+       fill="var(--k-lic)">31</text>
+     <rect x="666" y="40" width="130" height="34" rx="2" fill="color-mix(in srgb, var(--bad) 8%, transparent)"
+       stroke="var(--bad)" stroke-width="1.4" stroke-dasharray="4 3"/>
+     <text x="731" y="61" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5"
+       fill="var(--bad)">e(t) &gt; 31</text>
+     <line x1="24" y1="90" x2="796" y2="90" stroke="currentColor" stroke-width="1" opacity=".5"/>
+     <text x="24" y="106" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".7">not_before</text>
+     <text x="660" y="106" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".7">not_after</text>` +
+
+    lanes('RECIPIENT', null, null) +
+    `<rect x="18" y="140" width="244" height="190" rx="3" fill="none" stroke="currentColor"
+       stroke-width="1" stroke-dasharray="3 4" opacity=".45"/>
+     <rect x="558" y="140" width="244" height="190" rx="3" fill="none" stroke="currentColor"
+       stroke-width="1" stroke-dasharray="3 4" opacity=".45"/>
+     <text x="140" y="132" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10"
+       letter-spacing="1.4" fill="currentColor" opacity=".8">RECIPIENT MACHINE</text>
+     <text x="680" y="132" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10"
+       letter-spacing="1.4" fill="currentColor" opacity=".8">POLICY SERVER</text>` +
+
+    box(576, 154, 208, 34, 'server_root_cid', 'still exists — say so', {color:'srv', strong:true}) +
+    box(576, 202, 208, 40, 'if e ≤ e(not_after)', 'THE branch. On our machine.', {color:'srv', strong:true}) +
+    `<line x1="680" y1="244" x2="680" y2="272" stroke="var(--bad)" stroke-width="1.5"/>
+     <line x1="680" y1="272" x2="574" y2="272" stroke="var(--bad)" stroke-width="1.5" marker-end="url(#ah)"/>
+     <text x="628" y="266" text-anchor="middle" font-family="Archivo, sans-serif" font-size="10.5"
+       fill="var(--bad)">refuses</text>` +
+    box(300, 254, 220, 36, '403 denied', 'identical to every other', {color:'srv'}) +
+    arrow(298, 272, 252, 272, '', {color:'srv'}) +
+
+    box(34, 154, 212, 34, 'the .sfit', 'still on disk, unchanged', {}) +
+    box(34, 196, 212, 34, 'share_device_r', 'still unsealable', {color:'dev'}) +
+    box(34, 238, 212, 34, 'share_licence_{r,e}', 'never arrives again', {color:'lic', faded:true}) +
+    strike(34, 238, 212, 34) +
+    box(34, 288, 212, 34, 'KEK cannot form', 'no branch to patch here', {color:'kek', faded:true}),
+    'Expiry: past not_after the epoch index runs past 31, the licence handler refuses, and no KEK can form on the client.'),
+  steps:[
+    `The life of a container is cut into <b>32 equal slices</b>. <code>epoch_len = max(3600, ceil(window / 32))</code> seconds, and <code>e(t) = floor((t − not_before) / epoch_len)</code> gives 0 … 31.`,
+    `The index counts from <code>not_before</code>, not from 1970. Counted from 1970 the final seconds of a valid window would fall into a 33rd slot the packer never built — a valid licence that cannot be opened.`,
+    `Past the deadline, <code>e(t)</code> exceeds 31 and the licence handler refuses to derive. No new <span class="kref lic">epoch licence share</span> reaches the client, so no <span class="kref kek">KEK</span> can form there.`,
+    `<b>Say what this does and does not buy.</b> <span class="kref srv">server_root_cid</span> persists for the life of the container, so the server <i>can</i> still derive any epoch's share. Expiry is enforced by a branch — the gain is that the branch moved off the attacker's machine onto ours.`,
+    `The cost, stated before anyone asks: expiry is only as precise as one slice, and each recipient needs 32 slots in the file, about 3.6 kB.`,
+  ],
+  notes:[
+    {k:'attacker', h:'The retired sentence', p:`"Past the deadline, no valid share exists anywhere in the universe" is <b>not true as engineered</b>, and repeating it is on the project's list of traps. The root secret is still in its row. What is gone is the client's ability to obtain a share.`},
+    {k:'honest', h:'A stronger version is available', p:`Precompute all 32 shares at pack time, destroy <code>server_root_cid</code>, and delete each elapsed epoch. That costs about 1 kB per recipient and earns a real forward-security property — but it changes the key hierarchy, so it is an ADR and a decision, not an edit.`},
+  ],
+  state:{ cek:'none', dev:'live', lic:'gone', kek:'gone', key:'live', srv:'live' },
+  labels:{ cek:'Unreachable — nothing can unwrap it', dev:'Still in the file, still sealed', lic:'Not derivable by the client', kek:'Cannot form', key:'Unaffected', srv:'Root secret still resident' },
+},
+];
+
+/* =============================== rendering =============================== */
+const STATE_WORD = { none:'Does not exist yet', live:'Present', flight:'In flight', gone:'Cut off' };
+let current = 0, openKey = null;
+
+const rackGrid = document.getElementById('rackGrid');
+const defnEl   = document.getElementById('defn');
+const track    = document.getElementById('stageTrack');
+
+KEYS.forEach(k => {
+  const b = document.createElement('button');
+  b.className = 'chip';
+  b.id = 'chip-' + k.id;
+  b.type = 'button';
+  b.style.setProperty('--bar', `var(--k-${k.cls})`);
+  b.setAttribute('aria-pressed', 'false');
+  b.setAttribute('aria-controls', 'defn');
+  b.innerHTML = `<span class="chip-name">${k.name}</span>
+    <span class="chip-state"><span class="dot"></span><span class="st"></span></span>`;
+  b.addEventListener('click', () => toggleDefn(k.id));
+  rackGrid.appendChild(b);
+});
+
+STAGES.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.className = 'stage-btn';
+  b.type = 'button';
+  b.id = 'tab-' + i;
+  b.setAttribute('role', 'tab');
+  b.setAttribute('aria-selected', String(i === 0));
+  b.innerHTML = `<span class="stage-num">${s.n}</span>
+    <span class="stage-label">${s.label}</span>
+    <span class="stage-when">${s.when}</span>`;
+  b.addEventListener('click', () => show(i));
+  b.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); show((i + 1) % STAGES.length, true); }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); show((i - 1 + STAGES.length) % STAGES.length, true); }
+  });
+  track.appendChild(b);
+});
+
+function toggleDefn(id){
+  if (openKey === id) { openKey = null; } else { openKey = id; }
+  KEYS.forEach(k => document.getElementById('chip-' + k.id)
+    .setAttribute('aria-pressed', String(k.id === openKey)));
+  if (!openKey) { defnEl.hidden = true; return; }
+  const k = KEYS.find(x => x.id === openKey);
+  defnEl.style.setProperty('--bar', `var(--k-${k.cls})`);
+  defnEl.innerHTML = `<h3>${k.full}</h3><p class="sym">${k.name} · ${k.sym}</p>
+    ${k.body}<p class="lives">${k.lives}</p>`;
+  defnEl.hidden = false;
+}
+
+function show(i, focus){
+  current = i;
+  const s = STAGES[i];
+
+  document.querySelectorAll('.stage-btn').forEach((b, j) =>
+    b.setAttribute('aria-selected', String(j === i)));
+  if (focus) document.getElementById('tab-' + i).focus();
+
+  document.getElementById('rackStage').textContent = s.n.replace(/^0/, '');
+  KEYS.forEach(k => {
+    const chip = document.getElementById('chip-' + k.id);
+    const st = s.state[k.id] || 'none';
+    chip.dataset.state = st;
+    chip.querySelector('.dot').className = 'dot s-' + st;
+    chip.querySelector('.st').textContent = (s.labels && s.labels[k.id]) || STATE_WORD[st];
+  });
+
+  document.getElementById('stTitle').textContent = s.title;
+  document.getElementById('stLede').textContent = s.lede;
+  document.getElementById('svgHost').innerHTML = s.art();
+  document.getElementById('stCaption').textContent = s.cap;
+
+  document.getElementById('stSteps').innerHTML = s.steps.map(t => `<li>${t}</li>`).join('');
+  document.getElementById('stNotes').innerHTML = s.notes.map(n =>
+    `<div class="note ${n.k}"><h4>${n.h}</h4><p>${n.p}</p>${n.p2 ? `<p>${n.p2}</p>` : ''}</div>`).join('');
+}
+
+show(0);
+</script>
+
+</body></html>
